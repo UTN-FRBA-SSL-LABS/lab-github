@@ -52,6 +52,8 @@ make
 
 Vas a ver que `multiplicar` devuelve 0 — eso es lo esperado, es lo que vas a implementar.
 
+> **Tip:** a lo largo del laboratorio podés correr `make test` en cualquier momento para ver cuántos checks pasás, sin necesidad de hacer push. Guardá el push para cuando hayas terminado una parte completa.
+
 ---
 
 ## Qué vas a aprender
@@ -690,11 +692,48 @@ RESPUESTA_P7=
 - [ ] Preguntas P1–P7 respondidas en este archivo
 - [ ] Todo pusheado a `main`
 
-### Corrección automática
+### Verificación local con `make test`
 
-Cada vez que hacés `git push` — a cualquier branch — GitHub ejecuta automáticamente un **workflow de corrección** que valida todos los checks del laboratorio y calcula tu puntaje.
+A lo largo del laboratorio vas a hacer muchos commits. **No necesitás hacer push para verificar tu progreso**: tenés disponible un script local que corre los mismos checks que el corrector automático, directamente en tu máquina:
 
-Para ver los resultados:
+```bash
+make test
+```
+
+El resultado se ve así:
+
+```
+✅ C1. Proyecto compila (+4 pts)
+✅ C2. multiplicar implementada (+4 pts)
+❌ C4. Commit 'wip: experimento roto' existe (0 / 8 pts)
+...
+  Puntaje local: 60 / 100
+```
+
+El script verifica los 21 checks, incluyendo los de PRs y branches remotas. Para los checks que dependen de PRs (C10, C12–C14) usa la herramienta `gh` CLI de GitHub. Si no la tenés instalada o autenticada, el script lo indica y te explica cómo configurarla:
+
+```
+  Para verificar los checks de PRs localmente,
+  instalá gh CLI y autenticáte una sola vez:
+
+    # macOS:  brew install gh
+    # Linux:  https://cli.github.com
+    gh auth login
+
+  Después volvé a correr make test.
+```
+
+Una vez autenticado con `gh auth login`, `make test` puede verificar el 100% de los checks localmente.
+
+**Flujo recomendado:** hacé commits seguido a medida que avanzás, corré `make test` para ver tu puntaje, y dejá el push para cuando hayas terminado una parte completa del laboratorio.
+
+### Corrección automática en la nube
+
+Cuando hacés `git push`, GitHub ejecuta automáticamente un **workflow de corrección** que corre los mismos checks en la nube y calcula tu puntaje oficial.
+
+> ⚠️ **Evitá hacer pushes innecesarios.** Cada push lanza una ejecución en servidores de GitHub que consume tiempo de cómputo real. Como `make test` te muestra exactamente los mismos resultados en tu terminal, reservá el push para cuando tengas algo concreto listo: una parte terminada, los últimos checks pasando. No tiene sentido pushear para "ver cómo va" si ya lo podés ver localmente.
+
+Para ver los resultados del workflow:
 
 1. Entrá a tu repositorio en GitHub
 2. Hacé click en la pestaña **Actions**
@@ -703,7 +742,5 @@ Para ver los resultados:
 5. Al final del job, en el paso **Calcular puntaje**, vas a ver una tabla con el resultado de cada check y el puntaje total
 
 También podés ver un resumen rápido: en la pestaña **Code**, junto a cada commit aparece un ícono ✅ (todos los checks pasaron) o ❌ (alguno falló). Hacé click en ese ícono para ver el detalle.
-
-**El puntaje se actualiza con cada push.** Si un check no pasa, corregí el problema, commiteá los cambios y volvé a pushear: el workflow corre de nuevo y el puntaje se recalcula.
 
 El puntaje mínimo para aprobar es **60 / 100**.
